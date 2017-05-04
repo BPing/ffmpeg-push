@@ -40,7 +40,7 @@ echo $pushCmd->getExitCode();
 
 ### `binaries`:
 
-> 运行的命令名称或者路径
+> ffmpeg命令名称或者路径。如果想使用简单名称，记得把ffmpeg加入环境变量`PATH` 中。 默认值：ffmpeg
 
 ### `timeout`:
 
