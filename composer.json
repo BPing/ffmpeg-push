@@ -6,7 +6,8 @@
   "keywords": [
     "binary",
     "ffmpeg",
-    "rtmp"
+    "rtmp",
+    "ffmpeg-push"
   ],
   "license": "MIT",
   "authors": [
