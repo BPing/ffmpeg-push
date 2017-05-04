@@ -36,6 +36,14 @@ echo $pushCmd->getExitCode();
 
 ```
 
+# 安装
+
+```cmd
+composer require bping/ffmpeg-push
+```
+
+
+
 # 配置
 
 ### `binaries`:
