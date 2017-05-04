@@ -33,6 +33,7 @@ class PushFormat
 
     /**
      * @param string $videoCodec
+     * @return $this
      */
     public function setVideoCodec($videoCodec)
     {
@@ -41,7 +42,8 @@ class PushFormat
     }
 
     /**
-     * @param int $kiloBitrate
+     * @param int $videoKiloBitrate
+     * @return $this
      */
     public function setVideoKiloBitrate($videoKiloBitrate)
     {
@@ -49,8 +51,10 @@ class PushFormat
         return $this;
     }
 
+
     /**
-     * @param Array $additionalParamaters
+     * @param array $additionalParamaters
+     * @return $this
      */
     public function setAdditionalParamaters(array $additionalParamaters)
     {
@@ -59,7 +63,8 @@ class PushFormat
     }
 
     /**
-     * @param string $audioCodec
+     * @param $audioCodec
+     * @return $this
      */
     public function setAudioCodec($audioCodec)
     {
@@ -68,7 +73,8 @@ class PushFormat
     }
 
     /**
-     * @param int $audioKiloBitrate
+     * @param $audioKiloBitrate
+     * @return $this
      */
     public function setAudioKiloBitrate($audioKiloBitrate)
     {
@@ -77,7 +83,9 @@ class PushFormat
     }
 
     /**
-     * @param int $audioChannels
+     * @param $audioChannels
+     * @return $this
+     * @return $this
      */
     public function setAudioChannels($audioChannels)
     {
@@ -114,7 +122,8 @@ class PushFormat
         return $formats;
     }
 
-    public static function create(){
+    public static function create()
+    {
         return new static();
     }
 
