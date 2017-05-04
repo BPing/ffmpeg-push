@@ -2,6 +2,7 @@
   "name": "bping/ffmpeg-push",
   "type": "library",
   "description": "Push video stream to live server with ffmpeg",
+  "homepage": "https://",
   "keywords": [
     "binary",
     "ffmpeg",
