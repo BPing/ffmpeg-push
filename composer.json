@@ -1,5 +1,5 @@
 {
-  "name": "Bping/ffmpeg-push",
+  "name": "bping/ffmpeg-push",
   "type": "library",
   "description": "Push video stream to live server with ffmpeg",
   "keywords": [
