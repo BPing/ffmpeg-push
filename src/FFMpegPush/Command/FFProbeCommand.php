@@ -13,12 +13,18 @@ class FFProbeCommand extends Command
     const TYPE_STREAMS = 'streams';
     const TYPE_FORMAT = 'format';
 
-    public static function create($configuration = array(), LoggerInterface $logger = null)
+    public function __construct($configuration = array(), LoggerInterface $logger = null)
     {
+        $this->name = 'FFProbe';
         if (!$configuration instanceof ConfigurationInterface) {
             $configuration = new Configuration($configuration);
         }
         $configuration->set('binaries', $configuration->get('binaries', array('ffprobe')));
+        parent::__construct($configuration, $logger);
+    }
+
+    public static function create($configuration = array(), LoggerInterface $logger = null)
+    {
         return new static ($configuration, $logger);
     }
 
