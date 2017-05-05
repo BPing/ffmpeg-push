@@ -9,6 +9,8 @@ class FFMpegCommand extends Command
 {
     /**
      * FFMpegCommand constructor.
+     * @param array $configuration
+     * @param LoggerInterface|null $logger
      */
     public function __construct($configuration = array(), LoggerInterface $logger = null)
     {

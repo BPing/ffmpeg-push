@@ -1,18 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cbping-user
- * Date: 2017/5/3
- * Time: 18:30
- */
-
 namespace FFMpegPush;
 
 
 use Evenement\EventEmitter;
 use FFMpegPush\Command\FFProbeCommand;
+use FFMpegPush\Exception\RuntimeException;
 use FFMpegPush\Listeners\ListenerInterface;
 
+/**
+ * 推流监听。
+ *      计算推流进度等度量信息
+ *
+ * Class PushProgressListener
+ * @package FFMpegPush
+ */
 class PushProgressListener extends EventEmitter implements ListenerInterface
 {
     /** @var integer */
@@ -30,7 +31,7 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     /** @var double */
     private $lastOutput = null;
 
-    /** @var FFProbe */
+    /** @var FFProbeCommand */
     private $ffprobe;
 
     /** @var string */
@@ -78,7 +79,7 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     }
 
     /**
-     * @return FFProbe
+     * @return FFProbeCommand
      */
     public function getFFProbe()
     {
@@ -91,22 +92,6 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     public function getPathfile()
     {
         return $this->pathfile;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getCurrentPass()
-    {
-        return $this->currentPass;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getTotalPass()
-    {
-        return $this->totalPass;
     }
 
     /**
@@ -213,9 +198,11 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
         return array(
             'percent' => $this->percent,
             'remaining' => $this->remaining,
-            'rate' => $this->rate
+            'rate' => $this->rate,
+            'pushInfo' => $this->getPushInfo()
         );
     }
+
 
     private function initialize()
     {
@@ -233,6 +220,22 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
         $this->duration = $format->get('duration');
 
         $this->initialized = true;
+    }
+
+    /**
+     * @return PushInfo
+     */
+    public function getPushInfo()
+    {
+        return PushInfo::create()
+            ->setCurrentSize($this->currentSize)
+            ->setCurrentTime($this->currentTime)
+            ->setDuration($this->duration)
+            ->setPathfile($this->pathfile)
+            ->setRate($this->rate)
+            ->setRemaining($this->remaining)
+            ->setPercent($this->percent)
+            ->setTotalSize($this->totalSize);
     }
 
     /**

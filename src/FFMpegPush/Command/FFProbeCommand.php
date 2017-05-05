@@ -3,6 +3,9 @@ namespace FFMpegPush\Command;
 
 use FFMpegPush\Exception\FileException;
 use FFMpegPush\Exception\RuntimeException;
+use FFMpegPush\FFProbe\DataHandler;
+use FFMpegPush\FFProbe\Format;
+use FFMpegPush\FFProbe\StreamCollection;
 use FFMpegPush\VideoInfo;
 use FFMpegPush\Configuration;
 use FFMpegPush\ConfigurationInterface;
@@ -12,6 +15,8 @@ class FFProbeCommand extends Command
 {
     const TYPE_STREAMS = 'streams';
     const TYPE_FORMAT = 'format';
+    /** @var   DataHandler $dataHandler */
+    private $dataHandler;
 
     public function __construct($configuration = array(), LoggerInterface $logger = null)
     {
@@ -21,6 +26,7 @@ class FFProbeCommand extends Command
         }
         $configuration->set('binaries', $configuration->get('binaries', array('ffprobe')));
         parent::__construct($configuration, $logger);
+        $this->dataHandler = new DataHandler();
     }
 
     public static function create($configuration = array(), LoggerInterface $logger = null)
@@ -42,12 +48,12 @@ class FFProbeCommand extends Command
      * @param $pathfile
      * @param $command
      * @param $type
-     * @return VideoInfo
+     * @return Format|StreamCollection
      */
     private function probe($pathfile, $command, $type)
     {
         if (!is_file($pathfile)) {
-            throw new FileException('File 【'.$pathfile . "】 not found");
+            throw new FileException('File 【' . $pathfile . "】 not found");
         }
 
         $commands = array($pathfile, $command);
@@ -55,15 +61,12 @@ class FFProbeCommand extends Command
         $commands[] = '-print_format';
         $commands[] = 'json';
         try {
-            $output = $this->command($commands);
+            $this->command($commands);
+            $output = $this->getOutput();
         } catch (\Exception $e) {
             throw new RuntimeException(sprintf('Unable to probe %s', $pathfile), $e->getCode(), $e);
         }
-
-        if (static::TYPE_FORMAT === $type) {
-            return new VideoInfo($this->parseJson($output)['format']);
-        }
-        return new VideoInfo($this->parseJson($output));
+        return $this->dataHandler->map($type, $this->parseJson($output));
     }
 
     private function parseJson($data)

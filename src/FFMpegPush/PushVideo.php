@@ -48,23 +48,25 @@ class PushVideo extends FFMpegCommand
 
     /**
      * PushVideo constructor.
-     * @param $input
+     * @param array $configuration
+     * @param LoggerInterface|null $logger
      */
     public function __construct($configuration = array(), LoggerInterface $logger = null)
     {
         parent::__construct($configuration, $logger);
         $this->progressListener = PushProgressListener::create(FFProbeCommand::create($configuration, $logger));
-        $this->addListerner($this->progressListener);
+        $this->addListener($this->progressListener);
     }
 
     public function push()
     {
         $this->progressListener->setPathfile($this->input->getInputVideo());
-        return $this->command(array_merge(
+        $this->command(array_merge(
             $this->input->getInputs(),
             $this->format->getFormats(),
             $this->output->getOutPuts()
         ));
+        return $this->getPushInfo();
     }
 
 
@@ -73,8 +75,24 @@ class PushVideo extends FFMpegCommand
         return new static($configuration, $logger);
     }
 
+    /**
+     * 监听推流进度
+     *
+     * @param callable $listener
+     */
     public function onPregress(callable $listener)
     {
-        return $this->progressListener->on('progress', $listener);
+        $this->progressListener->on('progress', $listener);
+    }
+
+    /**
+     * 获取此时推流的一些状态值
+     *
+     * @return PushInfo
+     */
+    public function getPushInfo()
+    {
+        return $this->progressListener->getPushInfo()
+            ->setProcess($this->getProcess());
     }
 }

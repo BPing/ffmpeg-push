@@ -5,6 +5,7 @@ use FFMpegPush\Configuration;
 use FFMpegPush\ConfigurationInterface;
 use FFMpegPush\Exception\ConfigException;
 use FFMpegPush\Exception\ExecutableNotFoundException;
+use FFMpegPush\Exception\RuntimeException;
 use FFMpegPush\Listeners\ListenerInterface;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
@@ -111,8 +112,9 @@ class Command implements CommandInterface
 
     /**
      * @param ListenerInterface $listener
+     * @return $this
      */
-    public function addListerner(ListenerInterface $listener)
+    public function addListener(ListenerInterface $listener)
     {
         $this->listeners[] = $listener;
         return $this;
@@ -121,14 +123,14 @@ class Command implements CommandInterface
     /**
      * @return ListenerInterface[]
      */
-    public function getListerners()
+    public function getListeners()
     {
         return $this->listeners;
     }
 
     /**
      * @param $command
-     * @param ListenerInterface[] $listeners null
+     * @return string
      */
     public function command($command)
     {
@@ -142,16 +144,14 @@ class Command implements CommandInterface
             '%s running command %s', $this->name, $process->getCommandLine()
         ));
 
-        $process->run($this->buildCallback($this->getListerners()));
+        $process->run($this->buildCallback($this->getListeners()));
 
         if (!$process->isSuccessful()) {
             $this->logger->error(sprintf(
                 '%s failed to execute command %s error %s', $this->name, $process->getCommandLine(), $process->getErrorOutput()
             ));
-            return $process->getErrorOutput();
         } else {
             $this->logger->info(sprintf('%s executed command successfully', $this->name));
-            return $process->getOutput();
         }
     }
 
