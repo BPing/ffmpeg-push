@@ -19,6 +19,7 @@ use FFMpegPush\PushVideo;
 //var_dump($ffprobe->stream('test/test.mp4'));
 
 // 推流
+// ffmpeg -re  -i  \"test/test.mp4\" -c:v copy -c:a copy -f flv rtmp://pili-publish.heliwebs.com
 $pushUrl = 'rtmp://pili-publish.heliwebs.com;
 $pushCmd = PushVideo::create();
 // 监听推流进度
