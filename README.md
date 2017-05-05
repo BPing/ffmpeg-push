@@ -47,6 +47,14 @@ $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4
         
 ```
 
+# 安装
+
+```cmd
+composer require bping/ffmpeg-push
+```
+
+
+
 # 配置
 
 ### `binaries`:
