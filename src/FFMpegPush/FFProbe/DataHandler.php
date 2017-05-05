@@ -10,6 +10,7 @@ namespace FFMpegPush\FFProbe;
 
 
 use FFMpegPush\Exception\InvalidArgumentException;
+use FFMpegPush\Command\FFProbeCommand;
 
 class DataHandler
 {
