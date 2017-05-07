@@ -5,9 +5,19 @@ use FFMpegPush\Command\FFMpegCommand;
 use FFMpegPush\Command\FFProbeCommand;
 use Psr\Log\LoggerInterface;
 
+/**
+ * 推流命令
+ *
+ * Class PushVideo
+ * @package FFMpegPush
+ */
 class PushVideo extends FFMpegCommand
 {
-    /** @var $input PushInput */
+    /**
+     * 构造输入部分命令
+     *
+     * @var $input PushInput
+     */
     protected $input;
     /** @var  PushFormat */
     protected $format;
@@ -58,6 +68,12 @@ class PushVideo extends FFMpegCommand
         $this->addListener($this->progressListener);
     }
 
+    /**
+     * 推流
+     *
+     * @notice 阻塞
+     * @return PushInfo
+     */
     public function push()
     {
         $this->progressListener->setPathfile($this->input->getInputVideo());

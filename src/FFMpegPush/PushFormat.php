@@ -8,27 +8,59 @@
 
 namespace FFMpegPush;
 
-
+/**
+ * 处理部分命令参数构造器。
+ *      -vcodec -acodec -v:b  -a:b ....
+ *
+ *   对输入的视频文件进行转码等处理
+ *
+ * @author cbping
+ * @package FFMpegPush
+ */
 class PushFormat
 {
 
-    /** @var string */
+    /**
+     * 视频转码格式
+     *
+     * @var string
+     */
     protected $videoCodec = 'copy';
 
-    /** @var Integer 码率（K） */
+    /**
+     * 视频输出码率（K）
+     *
+     * @var Integer
+     */
     protected $videoKiloBitrate = null;
 
 
-    /** @var string */
+    /**
+     * 音频输出转码格式
+     *
+     * @var string
+     */
     protected $audioCodec = 'copy';
 
-    /** @var integer 码率（K） */
+    /**
+     *  音频输出码率（K）
+     *
+     * @var integer
+     */
     protected $audioKiloBitrate = null;
 
-    /** @var integer */
+    /**
+     *  音频输出通道
+     *
+     * @var integer
+     */
     protected $audioChannels = null;
 
-    /** @var Array */
+    /**
+     * 额外参数，作为补充
+     *
+     * @var Array
+     */
     protected $additionalParamaters = null;
 
     /**
@@ -93,7 +125,9 @@ class PushFormat
         return $this;
     }
 
-
+    /**
+     * @return array
+     */
     function getFormats()
     {
         $formats = array();

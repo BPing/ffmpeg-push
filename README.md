@@ -10,6 +10,9 @@ composer require bping/ffmpeg-push
 
 # 快速开始
 
+
+### 推流
+
 ```php
 require __DIR__ . '/trunk/vendor/autoload.php';
 
@@ -17,12 +20,6 @@ use FFMpegPush\PushFormat;
 use FFMpegPush\PushInput;
 use FFMpegPush\PushOutput;
 use FFMpegPush\PushVideo;
-
-// 获取视频文件信息
-///** @var  $ffprobe FFProbeCommand */
-//$ffprobe = FFProbeCommand::create();
-//var_dump($ffprobe->format('test/test.mp4'));
-//var_dump($ffprobe->stream('test/test.mp4'));
 
 // 推流
 // ffmpeg -re  -i  \"test/test.mp4\" -c:v copy -c:a copy -f flv rtmp://pili-publish.heliwebs.com
@@ -36,8 +33,11 @@ $pushCmd->onPregress(function ($percent,$remaining,$rate) {
 $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4'))
     ->setFormat(PushFormat::create())
     ->setOutput(PushOutput::create()->setPushUrl($pushUrl))
-    ->push();
-    
+    ->push();           
+```
+### 结果 `PushInfo`
+
+```php
 //是否成功
   $pushinfo->isSuccessful()    
 //输出
@@ -51,21 +51,47 @@ $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4
 //目前推流时间，可以用中途断流重推起点时间
   $pushinfo->getCurrentTime()
 //更多请看 PushInfo类  
-        
-```
-### 输入
-```php
-  PushInput::create()->setInputVideo('test/test.mp4')
 ```
 
-### 转码
+### 输入 `PushInput`
+
 ```php
- PushFormat::create()
+  PushInput::create()
+  ->setStartTime(10)
+  ->setInputVideo('test/test.mp4')
 ```
 
-### 输出
+### 转码 `PushFormat`
+
+```php
+        PushFormat::create()
+            ->setVideoCodec("x264")
+            ->setAudioCodec('copy')
+            ->setAudioKiloBitrate(125)
+            ->setVideoKiloBitrate(500)
+            ->setAdditionalParamaters(
+                array(
+                    '--preset',
+                    'ultrafast',
+                    ' --tune',
+                    'zerolatency',
+                )
+            );
+```
+
+### 输出 `PushOutput`
+
 ```php
  PushOutput::create()->setPushUrl($pushUrl)
+```
+
+### 获取视频文件信息
+
+```php
+///** @var  $ffprobe FFProbeCommand */
+$ffprobe = FFProbeCommand::create();
+var_dump($ffprobe->format('test/test.mp4'));
+var_dump($ffprobe->stream('test/test.mp4'));
 ```
 
 

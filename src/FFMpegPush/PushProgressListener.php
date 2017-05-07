@@ -112,12 +112,18 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
         }
     }
 
-
+    /**
+     * @return string
+     */
     protected function getPattern()
     {
         return '/size=(.*?) time=(.*?) /';
     }
 
+    /**
+     * @param $progress
+     * @return array|null|void
+     */
     private function parseProgress($progress)
     {
         if (!$this->initialized) {

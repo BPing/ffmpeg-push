@@ -36,14 +36,14 @@ class PushInfo
     /**
      * 视频时长（s）
      *
-     * @var integer
+     * @var double
      */
     private $duration;
 
     /**
      * 视频文件大小（Kb）
      *
-     * @var integer
+     * @var double
      * */
     private $totalSize;
 

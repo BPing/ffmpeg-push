@@ -11,10 +11,27 @@ namespace FFMpegPush;
 
 use FFMpegPush\Exception\FileException;
 
+/**
+ * 输入部分命令参数构造器。
+ *       -re -ss -i inputpath
+ *
+ * Class PushInput
+ * @package FFMpegPush
+ */
 class PushInput
 {
-    protected $time = 0;
+    /**
+     * 开始推流时间点（秒）
+     *
+     * @var int
+     */
+    protected $startTime = 0;
 
+    /**
+     * 输入文件
+     *
+     * @var string
+     */
     protected $inputVideo = '';
 
     /**
@@ -27,6 +44,7 @@ class PushInput
 
     /**
      * @param string $inputVideo
+     * @return PushInput
      */
     public function setInputVideo($inputVideo)
     {
@@ -35,15 +53,21 @@ class PushInput
     }
 
     /**
-     * @param int $time 秒
+     * @param int $startTime 秒
+     * @return PushInput
      */
-    public function setTime($time)
+    public function setStartTime($startTime)
     {
-        $this->time = $time;
+        $this->$startTime = $startTime;
         return $this;
     }
 
-
+    /**
+     * 返回输入部分构造完成参数数组
+     *
+     * @used PushVideo
+     * @return array
+     */
     public function getInputs()
     {
         if ('' === $this->inputVideo
