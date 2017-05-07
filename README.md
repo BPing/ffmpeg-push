@@ -8,7 +8,7 @@
 composer require bping/ffmpeg-push
 ```
 
-# 快速开始
+# 使用
 
 
 ### 推流
