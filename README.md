@@ -1,7 +1,13 @@
 # ffmpeg-push
 
     用ffmpeg命令推流库
-    
+  
+# 安装
+
+```cmd
+composer require bping/ffmpeg-push
+```
+
 # 快速开始
 
 ```php
@@ -47,12 +53,21 @@ $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4
 //更多请看 PushInfo类  
         
 ```
-
-# 安装
-
-```cmd
-composer require bping/ffmpeg-push
+### 输入
+```php
+  PushInput::create()->setInputVideo('test/test.mp4')
 ```
+
+### 转码
+```php
+ PushFormat::create()
+```
+
+### 输出
+```php
+ PushOutput::create()->setPushUrl($pushUrl)
+```
+
 
 # 工具
 
