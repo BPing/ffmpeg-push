@@ -135,17 +135,13 @@ class Command implements CommandInterface
     public function command($command)
     {
         $process = $this->initProcess($command);
-
         if (!$process) {
             throw new RuntimeException('the process not exist');
         }
-
         $this->logger->info(sprintf(
             '%s running command %s', $this->name, $process->getCommandLine()
         ));
-
         $process->run($this->buildCallback($this->getListeners()));
-
         if (!$process->isSuccessful()) {
             $this->logger->error(sprintf(
                 '%s failed to execute command %s error %s', $this->name, $process->getCommandLine(), $process->getErrorOutput()
@@ -153,6 +149,18 @@ class Command implements CommandInterface
         } else {
             $this->logger->info(sprintf('%s executed command successfully', $this->name));
         }
+    }
+
+    /**
+     * 停止执行
+     */
+    public function stop()
+    {
+        if ($this->process) {
+            $this->logger->info(sprintf('%s stopping.pid【%s】', $this->name, $this->process->getPid()));
+            return $this->process->stop();
+        }
+        return 0;
     }
 
     /**
@@ -173,6 +181,11 @@ class Command implements CommandInterface
         return $this->process->getExitCode();
     }
 
+    public function getExitCodeText()
+    {
+        return $this->process->getExitCodeText();
+    }
+
     public function getErrorOutput()
     {
         return $this->process->getErrorOutput();
@@ -188,7 +201,8 @@ class Command implements CommandInterface
         return $this->process->isSuccessful();
     }
 
-    public function clear(){
+    public function clear()
+    {
 
     }
 }

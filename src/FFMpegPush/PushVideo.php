@@ -85,16 +85,6 @@ class PushVideo extends FFMpegCommand
         return $this->getPushInfo();
     }
 
-    /**
-     * 停止执行推流
-     */
-    public function stop()
-    {
-        if ($this->process) {
-            $this->process->stop();
-        }
-    }
-
     public static function create($configuration = array(), LoggerInterface $logger = null)
     {
         return new static($configuration, $logger);
