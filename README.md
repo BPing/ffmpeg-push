@@ -33,7 +33,10 @@ $pushCmd->onPregress(function ($percent,$remaining,$rate) {
 $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4'))
     ->setFormat(PushFormat::create())
     ->setOutput(PushOutput::create()->setPushUrl($pushUrl))
-    ->push();           
+    ->push();
+        
+// 停止推流         
+// $pushCmd->stop();           
 ```
 ### 结果 `PushInfo`
 
