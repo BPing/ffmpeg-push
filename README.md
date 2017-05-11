@@ -39,7 +39,7 @@ $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4
     ->setOutput(PushOutput::create()->setPushUrl($pushUrl))
     ->push();
         
-// 停止推流         
+// 停止推流，需要异步调用 
 // $pushCmd->stop();           
 ```
 ### 结果 `PushInfo`
