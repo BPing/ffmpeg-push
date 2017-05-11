@@ -101,13 +101,6 @@ var_dump($ffprobe->format('test/test.mp4'));
 var_dump($ffprobe->stream('test/test.mp4'));
 ```
 
-
-# 工具
-
-* ffmpeg
-* ffprobe
-
-
 # 配置
 
 ### `binaries`:
