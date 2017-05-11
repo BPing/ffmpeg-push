@@ -10,7 +10,11 @@ composer require bping/ffmpeg-push
 
 # 使用
 
+### 首先
 
+  * 安装[ffmpeg](http://ffmpeg.org/download.html)，必须同时包含`ffprobe`命令
+  * 配置可执行文件目录到环境变量PATH中
+    
 ### 推流
 
 ```php
