@@ -117,7 +117,6 @@ var_dump($ffprobe->stream('test/test.mp4'));
 
 
 ```php
-///** @var  $ffprobe FFProbeCommand */
 $pushCmd = PushVideo::create(Configuration::create(
     array(
     'ffmpeg.binaries'=>array('ffmpeg'),
@@ -126,7 +125,6 @@ $pushCmd = PushVideo::create(Configuration::create(
     )
 ));
 ```
-
 
 
 # 主要依赖
