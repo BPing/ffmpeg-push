@@ -103,13 +103,30 @@ var_dump($ffprobe->stream('test/test.mp4'));
 
 # 配置
 
-### `binaries`:
+### `ffmpeg.binaries`:
 
 > ffmpeg命令名称或者路径。如果想使用简单名称，记得把ffmpeg加入环境变量`PATH` 中。 默认值：ffmpeg
+
+### `ffprobe.binaries`:
+
+> ffprobe命令名称或者路径。如果想使用简单名称，记得把ffprobe加入环境变量`PATH` 中。 默认值：ffprobe
 
 ### `timeout`:
 
 > 命令执行的超时时长，单位（s）.考虑到推流时长一般较长，所以默认值为一天
+
+
+```php
+///** @var  $ffprobe FFProbeCommand */
+$pushCmd = PushVideo::create(Configuration::create(
+    array(
+    'ffmpeg.binaries'=>array('ffmpeg'),
+    'ffprobe.binaries'=>array('ffprobe'),
+    'timeout'=>10800,
+    )
+));
+```
+
 
 
 # 主要依赖

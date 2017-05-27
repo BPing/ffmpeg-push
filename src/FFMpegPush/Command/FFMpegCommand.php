@@ -18,7 +18,7 @@ class FFMpegCommand extends Command
         if (!$configuration instanceof ConfigurationInterface) {
             $configuration = new Configuration($configuration);
         }
-        $configuration->set('binaries', $configuration->get('binaries', array('ffmpeg')));
+        $configuration->set('binaries', $configuration->get('ffmpeg.binaries', array('ffmpeg')));
         parent::__construct($configuration, $logger);
     }
 

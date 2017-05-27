@@ -24,7 +24,7 @@ class FFProbeCommand extends Command
         if (!$configuration instanceof ConfigurationInterface) {
             $configuration = new Configuration($configuration);
         }
-        $configuration->set('binaries', $configuration->get('binaries', array('ffprobe')));
+        $configuration->set('binaries', $configuration->get('ffprobe.binaries', array('ffprobe')));
         parent::__construct($configuration, $logger);
         $this->dataHandler = new DataHandler();
     }

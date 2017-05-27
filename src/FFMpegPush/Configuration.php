@@ -94,4 +94,9 @@ class Configuration implements ConfigurationInterface
     {
         $this->remove($offset);
     }
+
+    public static function create(array $data = array())
+    {
+        return new static($data);
+    }
 }
