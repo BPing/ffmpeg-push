@@ -53,8 +53,6 @@ $pushinfo = $pushCmd->setInput(PushInput::create()->setInputVideo('test/test.mp4
   $pushinfo->getErrOutput()    
 //执行返回码
   $pushinfo->getExitCode()
-//执行返回码
-  $pushinfo->getExitCode()
 //目前推流时间，可以用中途断流重推起点时间
   $pushinfo->getCurrentTime()
 //更多请看 PushInfo类  
