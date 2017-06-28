@@ -12,6 +12,7 @@ use FFMpegPush\Listeners\ListenerInterface;
  *      计算推流进度等度量信息
  *
  * Class PushProgressListener
+ *
  * @package FFMpegPush
  */
 class PushProgressListener extends EventEmitter implements ListenerInterface
@@ -200,12 +201,11 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
         if ($this->remaining === null) {
             return null;
         }
-
         return array(
-            'percent' => $this->percent,
+            'percent'   => $this->percent,
             'remaining' => $this->remaining,
-            'rate' => $this->rate,
-            'pushInfo' => $this->getPushInfo()
+            'rate'      => $this->rate,
+            'pushInfo'  => $this->getPushInfo()
         );
     }
 
@@ -246,7 +246,7 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
 
     /**
      * @param FFProbeCommand $ffprobe
-     * @param string $pathfile
+     * @param string         $pathfile
      * @return static
      */
     public static function create(FFProbeCommand $ffprobe, $pathfile = "")

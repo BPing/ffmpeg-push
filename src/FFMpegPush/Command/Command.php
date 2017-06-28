@@ -33,12 +33,13 @@ class Command implements CommandInterface
 
     /**
      * Command constructor.
+     *
      * @param array $config
      *          array(
      *                "binarys"=>array(),   // 可执行命令,数组类型。只有一个有效，优先级和数组顺序一致
      *                "timeout"=>"", // 默认一天。如果非法格式，也就是非数字类型，都统一采用默认值
      *            )
-     * @param $logger
+     * @param       $logger
      * @throws ConfigException
      * @throws ExecutableNotFoundException
      */
@@ -92,13 +93,14 @@ class Command implements CommandInterface
      * @param $command
      * @return Process
      */
-    private function initProcess($command)
+    protected function initProcess($command)
     {
-        $processBuilder = ProcessBuilder::create($command)
-            ->setPrefix($this->binary)
-            ->setTimeout($this->config->get('timeout'));
-        $this->process = $processBuilder->getProcess();
-
+        if (!is_null($command)) {
+            $processBuilder = ProcessBuilder::create($command)
+                ->setPrefix($this->binary)
+                ->setTimeout($this->config->get('timeout'));
+            $this->process = $processBuilder->getProcess();
+        }
         return $this->process;
     }
 
@@ -178,27 +180,50 @@ class Command implements CommandInterface
 
     public function getExitCode()
     {
-        return $this->process->getExitCode();
+        if ($this->process) {
+            return $this->process->getExitCode();
+        }
+        return null;
+    }
+
+    public function getCommandLine()
+    {
+        if ($this->process) {
+            return $this->process->getCommandLine();
+        }
+        return null;
     }
 
     public function getExitCodeText()
     {
-        return $this->process->getExitCodeText();
+        if ($this->process) {
+            return $this->process->getExitCodeText();
+        }
+        return null;
     }
 
     public function getErrorOutput()
     {
-        return $this->process->getErrorOutput();
+        if ($this->process) {
+            return $this->process->getErrorOutput();
+        }
+        return null;
     }
 
     public function getOutput()
     {
-        return $this->process->getOutput();
+        if ($this->process) {
+            return $this->process->getOutput();
+        }
+        return null;
     }
 
     public function isSuccessful()
     {
-        return $this->process->isSuccessful();
+        if ($this->process) {
+            return $this->process->isSuccessful();
+        }
+        return null;
     }
 
     public function clear()

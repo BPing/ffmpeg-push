@@ -22,9 +22,9 @@ use FFMpegPush\Exception\FileException;
 class PushInput
 {
     /**
-     * 开始推流时间点（秒）
+     * 开始推流时间点（秒）或者 hh:mm:ss.xxx
      *
-     * @var int
+     * @var int|string
      */
     protected $startTime = 0;
 
@@ -54,7 +54,7 @@ class PushInput
     }
 
     /**
-     * @param int $startTime 秒
+     * @param int|string $startTime 秒
      * @return PushInput
      */
     public function setStartTime($startTime)
