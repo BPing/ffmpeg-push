@@ -18,13 +18,17 @@ class PushVideoTest extends \PHPUnit_Framework_TestCase
         $pushCmd = PushVideo::create();
 
         $debugListener = new LineListener();
-        $pushCmd->addListerner($debugListener);
+        $pushCmd->addListener($debugListener);
         $lastStr = LastMsg::create();
         $debugListener->on('debug', function ($line) use ($lastStr) {
             if (is_string($line) && '' !== $line && "" !== $line) {
                 $lastStr->strMsg = $line;
             }
             return;
+        });
+
+        $pushCmd->onProgress(function ($percent,$remaining,$rate) {
+            echo "progress:$percent% remaining:$remaining(s) rate:$rate(kb/s)\n";
         });
 
         $pushCmd->setInput(PushInput::create()->setInputVideo('res/test.mp4'))

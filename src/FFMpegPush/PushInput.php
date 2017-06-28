@@ -16,6 +16,7 @@ use FFMpegPush\Exception\FileException;
  *       -re -ss -i inputpath
  *
  * Class PushInput
+ *
  * @package FFMpegPush
  */
 class PushInput
@@ -58,7 +59,7 @@ class PushInput
      */
     public function setStartTime($startTime)
     {
-        $this->$startTime = $startTime;
+        $this->startTime = $startTime;
         return $this;
     }
 
@@ -81,7 +82,7 @@ class PushInput
             'info',
             '-re',
             '-ss',
-            '' . $this->time,
+            '' . $this->startTime,
             '-i',
             $this->inputVideo,
         );

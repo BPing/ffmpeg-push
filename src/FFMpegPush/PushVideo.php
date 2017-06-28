@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
  * 推流命令
  *
  * Class PushVideo
+ *
  * @package FFMpegPush
  */
 class PushVideo extends FFMpegCommand
@@ -58,7 +59,8 @@ class PushVideo extends FFMpegCommand
 
     /**
      * PushVideo constructor.
-     * @param array $configuration
+     *
+     * @param array                $configuration
      * @param LoggerInterface|null $logger
      */
     public function __construct($configuration = array(), LoggerInterface $logger = null)
@@ -95,7 +97,7 @@ class PushVideo extends FFMpegCommand
      *
      * @param callable $listener
      */
-    public function onPregress(callable $listener)
+    public function onProgress(callable $listener)
     {
         $this->progressListener->on('progress', $listener);
     }
