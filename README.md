@@ -30,7 +30,7 @@ use FFMpegPush\PushVideo;
 $pushUrl = 'rtmp://pili-publish.heliwebs.com;
 $pushCmd = PushVideo::create();
 // 监听推流进度
-$pushCmd->onPregress(function ($percent,$remaining,$rate) {
+$pushCmd->onProgress(function ($percent,$remaining,$rate) {
 //    var_dump(func_get_args());
     echo "progress:$percent% remaining:$remaining(s) rate:$rate(kb/s)\n";
 });
