@@ -19,13 +19,21 @@ namespace FFMpegPush;
  */
 class PushFormat
 {
+    // 视频转码
+    const CODE_V_H264 = 'h264';
+    const CODE_V_COPY = 'copy';
+
+    // 音频转码
+    const CODE_A_AAC  = 'aac';
+    const CODE_A_COPY = 'copy';
+
 
     /**
      * 视频转码格式
      *
      * @var string
      */
-    protected $videoCodec = 'copy';
+    protected $videoCodec = self::CODE_V_COPY;
 
     /**
      * 视频输出码率（K）
@@ -40,7 +48,7 @@ class PushFormat
      *
      * @var string
      */
-    protected $audioCodec = 'copy';
+    protected $audioCodec = self::CODE_A_COPY;
 
     /**
      *  音频输出码率（K）
@@ -66,9 +74,15 @@ class PushFormat
     /**
      * @param string $videoCodec
      * @return $this
+     * @throws \Exception
      */
-    public function setVideoCodec($videoCodec)
+    public function setVideoCodec($videoCodec = self::CODE_V_COPY)
     {
+        $codeArr = [self::CODE_V_COPY, self::CODE_V_H264];
+        if (!in_array($videoCodec, $codeArr)) {
+            throw new \Exception('the video encoding format [' . $videoCodec . '] is not supported. support ['
+                . implode(',', $codeArr) . ']');
+        }
         $this->videoCodec = $videoCodec;
         return $this;
     }
@@ -95,11 +109,17 @@ class PushFormat
     }
 
     /**
-     * @param $audioCodec
+     * @param string $audioCodec
      * @return $this
+     * @throws \Exception
      */
-    public function setAudioCodec($audioCodec)
+    public function setAudioCodec($audioCodec = self::CODE_A_COPY)
     {
+        $codeArr = [self::CODE_A_COPY, self::CODE_A_AAC];
+        if (!in_array($audioCodec, $codeArr)) {
+            throw new \Exception('the audio encoding format [' . $audioCodec . '] is not supported. support ['
+                . implode(',', $codeArr) . ']');
+        }
         $this->audioCodec = $audioCodec;
         return $this;
     }
