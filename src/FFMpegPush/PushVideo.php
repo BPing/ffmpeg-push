@@ -112,4 +112,24 @@ class PushVideo extends FFMpegCommand
         return $this->progressListener->getPushInfo()
             ->setProcess($this->getProcess());
     }
+
+    /**
+     * 获取推流命令最终形式
+     *
+     * @return string
+     */
+    public function getCommandLine()
+    {
+        return implode(" ",
+            array_map(
+                array('Symfony\\Component\\Process\\ProcessUtils', 'escapeArgument'),
+                array_merge(
+                    array($this->binary),
+                    $this->input->getInputs(),
+                    $this->format->getFormats(),
+                    $this->output->getOutPuts()
+                )
+            )
+        );
+    }
 }
