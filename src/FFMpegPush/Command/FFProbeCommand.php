@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 class FFProbeCommand extends Command
 {
     const TYPE_STREAMS = 'streams';
-    const TYPE_FORMAT = 'format';
+    const TYPE_FORMAT  = 'format';
     /** @var   DataHandler $dataHandler */
     private $dataHandler;
 
@@ -49,11 +49,12 @@ class FFProbeCommand extends Command
      * @param $command
      * @param $type
      * @return Format|StreamCollection
+     * @throws FileException
      */
     private function probe($pathfile, $command, $type)
     {
         if (!is_file($pathfile)) {
-            throw new FileException('File 【' . $pathfile . "】 not found");
+            throw new FileException('File 【' . $pathfile . "】 not found.");
         }
 
         $commands = array($pathfile, $command);

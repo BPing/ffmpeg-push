@@ -15,16 +15,30 @@ $pushUrl = 'rtmp://pili-publish.heliwebs.com';
 
 $pushCmd = PushVideo::create();
 
-$pushCmd->onProgress(function ($percent,$remaining,$rate) {
+$pushCmd->onProgress(function ($percent, $remaining, $rate) {
 //    var_dump(func_get_args());
     echo "progress:$percent% remaining:$remaining(s) rate:$rate(kb/s)\n";
 });
 
-$res = $pushCmd->setInput(PushInput::create()->setInputVideo('../../../res/test.mp4'))
-    ->setFormat(PushFormat::create())
-    ->setOutput(PushOutput::create()->setPushUrl($pushUrl))
-    ->push();
+$pushCmd->setInput(
+    PushInput::create()
+        ->setStartTime(0)
+        ->setInputVideo('res/test.mp4')
+)
+    ->setFormat(
+        PushFormat::create()
+            ->setVideoCodec(PushFormat::CODE_V_COPY)
+    )
+    ->setOutput(
+        PushOutput::create()
+            ->setPushUrl($pushUrl)
+    );
 
-var_dump($res);
-echo $pushCmd->getProcess()->getCommandLine();
-echo $pushCmd->getExitCode();
+echo $pushCmd->getCommandLine();
+
+// 开始推流
+$pushCmd->push();
+
+echo $pushCmd->getErrorOutput();
+echo "\n";
+echo "Exit Code: " . $pushCmd->getExitCode();
