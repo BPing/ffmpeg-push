@@ -32,17 +32,16 @@ class PushVideoTest extends \PHPUnit_Framework_TestCase
 
         $pushCmd->setInput(PushInput::create()->setInputVideo('res/test.mp4'))
             ->setFormat(PushFormat::create())
-            ->setOutput(PushOutput::create()->setPushUrl($pushUrl))
-            ->push();
+            ->setOutput(PushOutput::create()->setPushUrl($pushUrl));
 
         echo $pushCmd->getCommandLine();
+        $pushCmd->push();
         $this->assertTrue(!$pushCmd->isSuccessful(), 'cmd should run fail');
         $this->assertTrue(!$pushCmd->getExitCode() !== 1);
         $this->assertNotEmpty($pushCmd->getCommandLine(), 'cmd should not empty');
         $this->assertNotEmpty($pushCmd->getExitCodeText() == 'General error', 'ExitCodeText:General error');
         $this->assertContains(': Unknown error occurred', $lastStr->strMsg, 'Unknown error occurred');
         $this->assertContains(': Unknown error occurred', $pushCmd->getErrorOutput(), 'error output Unknown error occurred');
-
     }
 
     /**
