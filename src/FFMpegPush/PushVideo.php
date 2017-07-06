@@ -3,6 +3,7 @@ namespace FFMpegPush;
 
 use FFMpegPush\Command\FFMpegCommand;
 use FFMpegPush\Command\FFProbeCommand;
+use FFMpegPush\Exception\ConfigException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -75,9 +76,13 @@ class PushVideo extends FFMpegCommand
      *
      * @notice 阻塞
      * @return PushInfo
+     * @throws \Exception
      */
     public function push()
     {
+        if (is_null($this->input) || is_null($this->format) || is_null($this->output)) {
+            throw new ConfigException('input|format|output should not be null.');
+        }
         $this->progressListener->setPathfile($this->input->getInputVideo());
         $this->command(array_merge(
             $this->input->getInputs(),
