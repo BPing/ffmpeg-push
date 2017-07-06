@@ -120,16 +120,20 @@ class PushVideo extends FFMpegCommand
      */
     public function getCommandLine()
     {
-        return implode(" ",
-            array_map(
-                array('Symfony\\Component\\Process\\ProcessUtils', 'escapeArgument'),
-                array_merge(
-                    array($this->binary),
-                    $this->input->getInputs(),
-                    $this->format->getFormats(),
-                    $this->output->getOutPuts()
+        $commandLine = parent::getCommandLine();
+        if (is_null($commandLine)) {
+            $commandLine = implode(" ",
+                array_map(
+                    array('Symfony\\Component\\Process\\ProcessUtils', 'escapeArgument'),
+                    array_merge(
+                        array($this->binary),
+                        $this->input->getInputs(),
+                        $this->format->getFormats(),
+                        $this->output->getOutPuts()
+                    )
                 )
-            )
-        );
+            );
+        }
+        return $commandLine;
     }
 }
