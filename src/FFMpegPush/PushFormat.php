@@ -27,6 +27,13 @@ class PushFormat
     const CODE_A_AAC  = 'aac';
     const CODE_A_COPY = 'copy';
 
+    // 音频常用采样率
+    const SAMPLE_RATE_44_1_KHZ  = 44100;
+    const SAMPLE_RATE_48_KHZ    = 48000;
+    const SAMPLE_RATE_22_05_KHZ = 22050;
+    const SAMPLE_RATE_FM        = self::SAMPLE_RATE_22_05_KHZ; //FM广播的声音品质
+    const SAMPLE_RATE_CD        = self::SAMPLE_RATE_44_1_KHZ;  //CD音质
+    const SAMPLE_RATE_DVD       = self::SAMPLE_RATE_48_KHZ;    //DVD音质
 
     /**
      * 视频转码格式
@@ -40,7 +47,7 @@ class PushFormat
      *
      * @var Integer
      */
-    protected $videoKiloBitrate = null;
+    protected $videoKiloBitRate = null;
 
 
     /**
@@ -55,7 +62,7 @@ class PushFormat
      *
      * @var integer
      */
-    protected $audioKiloBitrate = null;
+    protected $audioKiloBitRate = null;
 
     /**
      *  音频输出通道
@@ -65,11 +72,18 @@ class PushFormat
     protected $audioChannels = null;
 
     /**
+     * 音频采样率
+     *
+     * @var integer
+     */
+    protected $audioSampleRate = null;
+
+    /**
      * 额外参数，作为补充
      *
      * @var Array
      */
-    protected $additionalParamaters = null;
+    protected $additionalParameters = null;
 
     /**
      * @param string $videoCodec
@@ -88,23 +102,22 @@ class PushFormat
     }
 
     /**
-     * @param int $videoKiloBitrate
+     * @param int $videoKiloBitRate
      * @return $this
      */
-    public function setVideoKiloBitrate($videoKiloBitrate)
+    public function setVideoKiloBitrate($videoKiloBitRate)
     {
-        $this->videoKiloBitrate = $videoKiloBitrate;
+        $this->videoKiloBitRate = $videoKiloBitRate;
         return $this;
     }
 
-
     /**
-     * @param array $additionalParamaters
+     * @param array $additionalParameters
      * @return $this
      */
-    public function setAdditionalParamaters(array $additionalParamaters)
+    public function setAdditionalParamaters(array $additionalParameters)
     {
-        $this->additionalParamaters = $additionalParamaters;
+        $this->additionalParameters = $additionalParameters;
         return $this;
     }
 
@@ -125,12 +138,12 @@ class PushFormat
     }
 
     /**
-     * @param $audioKiloBitrate
+     * @param $audioKiloBitRate
      * @return $this
      */
-    public function setAudioKiloBitrate($audioKiloBitrate)
+    public function setAudioKiloBitrate($audioKiloBitRate)
     {
-        $this->audioKiloBitrate = $audioKiloBitrate;
+        $this->audioKiloBitRate = $audioKiloBitRate;
         return $this;
     }
 
@@ -146,6 +159,16 @@ class PushFormat
     }
 
     /**
+     * @param $audioSampleRate
+     * @return $this
+     */
+    public function setAudioSampleRate($audioSampleRate)
+    {
+        $this->audioSampleRate = $audioSampleRate;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     function getFormats()
@@ -154,21 +177,25 @@ class PushFormat
         $formats = array_merge($formats, array('-vcodec', $this->videoCodec));
         $formats = array_merge($formats, array('-acodec', $this->audioCodec));
 
-        if (null !== $this->videoKiloBitrate) {
-            $formats = array_merge($formats, array('-b:v', $this->videoKiloBitrate . 'k'));
+        if (null !== $this->videoKiloBitRate) {
+            $formats = array_merge($formats, array('-b:v', $this->videoKiloBitRate . 'k'));
         }
 
-        if (null !== $this->audioKiloBitrate) {
-            $formats = array_merge($formats, array('-b:a', $this->audioKiloBitrate . 'k'));
+        if (null !== $this->audioKiloBitRate) {
+            $formats = array_merge($formats, array('-b:a', $this->audioKiloBitRate . 'k'));
         }
 
+        if (null !== $this->audioKiloBitRate) {
+            $formats[] = '-ar';
+            $formats[] = $this->audioSampleRate;
+        }
         if (null !== $this->audioChannels) {
             $formats[] = '-ac';
             $formats[] = $this->audioChannels;
         }
 
-        if (null !== $this->additionalParamaters) {
-            foreach ($this->additionalParamaters as $additionalParameter) {
+        if (null !== $this->additionalParameters) {
+            foreach ($this->additionalParameters as $additionalParameter) {
                 $formats[] = $additionalParameter;
             }
         }

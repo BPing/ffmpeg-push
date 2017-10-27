@@ -93,8 +93,8 @@ use FFMpegPush\PushVideo;
 
 ```php
         PushFormat::create()
-            ->setVideoCodec("x264")
-            ->setAudioCodec('copy')
+            ->setVideoCodec(PushFormat::CODE_V_COPY)
+            ->setAudioCodec(PushFormat::CODE_A_COPY)
             ->setAudioKiloBitrate(125)
             ->setVideoKiloBitrate(500)
             ->setAdditionalParamaters(
