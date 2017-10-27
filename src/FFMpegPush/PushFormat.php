@@ -28,12 +28,13 @@ class PushFormat
     const CODE_A_COPY = 'copy';
 
     // 音频常用采样率
-    const SAMPLE_RATE_44_1_KHZ  = 44100;
-    const SAMPLE_RATE_48_KHZ    = 48000;
-    const SAMPLE_RATE_22_05_KHZ = 22050;
-    const SAMPLE_RATE_FM        = self::SAMPLE_RATE_22_05_KHZ; //FM广播的声音品质
-    const SAMPLE_RATE_CD        = self::SAMPLE_RATE_44_1_KHZ;  //CD音质
-    const SAMPLE_RATE_DVD       = self::SAMPLE_RATE_48_KHZ;    //DVD音质
+    const SAMPLE_RATE_44_1_KHZ   = 44100;
+    const SAMPLE_RATE_48_KHZ     = 48000;
+    const SAMPLE_RATE_22_05_KHZ  = 22050;
+    const SAMPLE_RATE_11_025_KHZ = 11025;
+    const SAMPLE_RATE_FM         = self::SAMPLE_RATE_22_05_KHZ; //FM广播的声音品质
+    const SAMPLE_RATE_CD         = self::SAMPLE_RATE_44_1_KHZ;  //CD音质
+    const SAMPLE_RATE_DVD        = self::SAMPLE_RATE_48_KHZ;    //DVD音质
 
     /**
      * 视频转码格式
