@@ -1,17 +1,17 @@
 <?php
+
 namespace FFMpegPush;
 
 /**
  * 输出部分命令参数构造器。
- *       -f flv output
+ *       -f flv output.
  *
  * @author cbping
- * @package FFMpegPush
  */
 class PushOutput
 {
     /**
-     * 输出路径 如：rtmp://;http://
+     * 输出路径 如：rtmp://;http://.
      *
      * @var string
      */
@@ -19,27 +19,27 @@ class PushOutput
 
     /**
      * @param mixed $pushUrl
+     *
      * @return PushOutput
      */
     public function setPushUrl($pushUrl)
     {
         $this->pushUrl = $pushUrl;
-        return $this;
 
+        return $this;
     }
 
     public function getOutPuts()
     {
-        return array(
+        return [
             '-f',
             'flv',
-            $this->pushUrl
-        );
+            $this->pushUrl,
+        ];
     }
 
     public static function create()
     {
         return new static();
     }
-
 }

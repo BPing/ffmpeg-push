@@ -1,8 +1,7 @@
 <?php
-namespace FFMpegPush\Exception;
 
+namespace FFMpegPush\Exception;
 
 class FileException extends \RuntimeException implements ExceptionInterface
 {
-
 }

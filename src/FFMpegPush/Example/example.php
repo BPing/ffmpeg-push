@@ -1,11 +1,11 @@
 <?php
+
 namespace FFMpegPush\Example;
 
 use FFMpegPush\PushFormat;
 use FFMpegPush\PushInput;
 use FFMpegPush\PushOutput;
 use FFMpegPush\PushVideo;
-
 
 ///** @var  $ffprobe FFProbeCommand */
 //$ffprobe = FFProbeCommand::create();
@@ -41,4 +41,4 @@ $pushCmd->push();
 
 echo $pushCmd->getErrorOutput();
 echo "\n";
-echo "Exit Code: " . $pushCmd->getExitCode();
+echo 'Exit Code: '.$pushCmd->getExitCode();

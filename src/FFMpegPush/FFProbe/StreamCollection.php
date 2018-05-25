@@ -1,11 +1,12 @@
 <?php
+
 namespace FFMpegPush\FFProbe;
 
 class StreamCollection implements \Countable, \IteratorAggregate
 {
     private $streams;
 
-    public function __construct(array $streams = array())
+    public function __construct(array $streams = [])
     {
         $this->streams = array_values($streams);
     }

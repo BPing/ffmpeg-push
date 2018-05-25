@@ -31,7 +31,7 @@ class LineListener extends EventEmitter implements ListenerInterface
     private function emitLines($event, $lines)
     {
         foreach (explode("\n", $lines) as $line) {
-            $this->emit($event, array($line));
+            $this->emit($event, [$line]);
         }
     }
 }

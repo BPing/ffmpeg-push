@@ -1,4 +1,5 @@
 <?php
+
 namespace FFMpegPush\Command;
 
 interface CommandInterface
