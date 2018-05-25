@@ -3,20 +3,20 @@
  * Created by PhpStorm.
  * User: cbping-user
  * Date: 2017/5/5
- * Time: 10:17
+ * Time: 10:17.
  */
 
 namespace FFMpegPush\FFProbe;
 
-
-use FFMpegPush\Exception\InvalidArgumentException;
 use FFMpegPush\Command\FFProbeCommand;
+use FFMpegPush\Exception\InvalidArgumentException;
 
 class DataHandler
 {
     /**
      * @param $type
      * @param $data
+     *
      * @return Format|StreamCollection
      */
     public function map($type, $data)

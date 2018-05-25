@@ -1,4 +1,5 @@
 <?php
+
 namespace FFMpegPush\Command;
 
 use FFMpegPush\Configuration;
@@ -18,39 +19,40 @@ class Command implements CommandInterface
 {
     protected $name = '';
 
-    /** @var  $process Process */
+    /** @var $process Process */
     protected $process;
     /** @var $config Configuration */
     protected $config;
-    /** @var $logger  LoggerInterface */
+    /** @var $logger LoggerInterface */
     protected $logger;
     /** @var */
     protected $binary;
     /** one day */
     const TimeOut = 86400;
     /** @var $listeners ListenerInterface[] */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Command constructor.
      *
      * @param array $config
-     *          array(
-     *                "binarys"=>array(),   // 可执行命令,数组类型。只有一个有效，优先级和数组顺序一致
-     *                "timeout"=>"", // 默认一天。如果非法格式，也就是非数字类型，都统一采用默认值
-     *            )
+     *                      array(
+     *                      "binarys"=>array(),   // 可执行命令,数组类型。只有一个有效，优先级和数组顺序一致
+     *                      "timeout"=>"", // 默认一天。如果非法格式，也就是非数字类型，都统一采用默认值
+     *                      )
      * @param       $logger
+     *
      * @throws ConfigException
      * @throws ExecutableNotFoundException
      */
-    public function __construct($config = array(), LoggerInterface $logger = null)
+    public function __construct($config = [], LoggerInterface $logger = null)
     {
         if (is_array($config)) {
             $this->config = new Configuration($config);
         } elseif ($config instanceof ConfigurationInterface) {
             $this->config = $config;
         } else {
-            throw new ConfigException("config should not be null");
+            throw new ConfigException('config should not be null');
         }
 
         if (!$this->config->has('binaries')) {
@@ -63,7 +65,7 @@ class Command implements CommandInterface
         $finder = new ExecutableFinder();
         $binary = null;
         $binaries = $this->config->get('binaries');
-        $binaries = is_array($binaries) ? $binaries : array($binaries);
+        $binaries = is_array($binaries) ? $binaries : [$binaries];
 
         foreach ($binaries as $candidate) {
             if (file_exists($candidate) && is_executable($candidate)) {
@@ -83,7 +85,7 @@ class Command implements CommandInterface
         $this->binary = $binary;
 
         if (null === $logger) {
-            $logger = new Logger(__NAMESPACE__ . ' logger');
+            $logger = new Logger(__NAMESPACE__.' logger');
             $logger->pushHandler(new NullHandler());
         }
         $this->logger = $logger;
@@ -91,6 +93,7 @@ class Command implements CommandInterface
 
     /**
      * @param $command
+     *
      * @return Process
      */
     protected function initProcess($command)
@@ -101,6 +104,7 @@ class Command implements CommandInterface
                 ->setTimeout($this->config->get('timeout'));
             $this->process = $processBuilder->getProcess();
         }
+
         return $this->process;
     }
 
@@ -114,11 +118,13 @@ class Command implements CommandInterface
 
     /**
      * @param ListenerInterface $listener
+     *
      * @return $this
      */
     public function addListener(ListenerInterface $listener)
     {
         $this->listeners[] = $listener;
+
         return $this;
     }
 
@@ -132,6 +138,7 @@ class Command implements CommandInterface
 
     /**
      * @param $command
+     *
      * @return string
      */
     public function command($command)
@@ -154,19 +161,22 @@ class Command implements CommandInterface
     }
 
     /**
-     * 停止执行
+     * 停止执行.
      */
     public function stop()
     {
         if ($this->process) {
             $this->logger->info(sprintf('%s stopping.pid【%s】', $this->name, $this->process->getPid()));
+
             return $this->process->stop();
         }
+
         return 0;
     }
 
     /**
      * @param $listeners
+     *
      * @return \Closure
      */
     private function buildCallback($listeners)
@@ -183,7 +193,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getExitCode();
         }
-        return null;
     }
 
     public function getCommandLine()
@@ -191,7 +200,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getCommandLine();
         }
-        return null;
     }
 
     public function getExitCodeText()
@@ -199,7 +207,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getExitCodeText();
         }
-        return null;
     }
 
     public function getErrorOutput()
@@ -207,7 +214,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getErrorOutput();
         }
-        return null;
     }
 
     public function getOutput()
@@ -215,7 +221,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getOutput();
         }
-        return null;
     }
 
     public function isSuccessful()
@@ -223,11 +228,9 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->isSuccessful();
         }
-        return null;
     }
 
     public function clear()
     {
-
     }
 }
