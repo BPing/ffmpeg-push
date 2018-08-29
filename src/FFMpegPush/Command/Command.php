@@ -1,4 +1,5 @@
 <?php
+
 namespace FFMpegPush\Command;
 
 use FFMpegPush\Configuration;
@@ -14,31 +15,69 @@ use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
+/**
+ * Class Command 命令基本类
+ *
+ * @package FFMpegPush\Command
+ */
 class Command implements CommandInterface
 {
+    /**
+     * 名字
+     *
+     * @var string
+     */
     protected $name = '';
 
-    /** @var  $process Process */
+    /**
+     * 底层命令进程句柄。
+     *
+     * @var  $process Process
+     */
     protected $process;
-    /** @var $config Configuration */
+
+    /**
+     * 命令配置信息
+     *
+     * @var $config Configuration
+     */
     protected $config;
+
     /** @var $logger  LoggerInterface */
     protected $logger;
-    /** @var */
+
+    /**
+     * 命令可执行文件目录
+     *
+     * @var string
+     */
     protected $binary;
-    /** one day */
+
+    /**
+     * 命令执行超时时间. 默认一天
+     */
     const TimeOut = 86400;
-    /** @var $listeners ListenerInterface[] */
+
+    /**
+     * 监听者集合。
+     *   监听命令执行进度
+     *
+     * @var $listeners ListenerInterface[]
+     */
     protected $listeners = array();
 
     /**
      * Command constructor.
      *
      * @param array $config
+     *<code>
+     * <?php
      *          array(
      *                "binarys"=>array(),   // 可执行命令,数组类型。只有一个有效，优先级和数组顺序一致
      *                "timeout"=>"", // 默认一天。如果非法格式，也就是非数字类型，都统一采用默认值
      *            )
+     *
+     * </code>
      * @param       $logger
      * @throws ConfigException
      * @throws ExecutableNotFoundException
@@ -60,8 +99,8 @@ class Command implements CommandInterface
             $this->config->set('timeout', self::TimeOut);
         }
 
-        $finder = new ExecutableFinder();
-        $binary = null;
+        $finder   = new ExecutableFinder();
+        $binary   = null;
         $binaries = $this->config->get('binaries');
         $binaries = is_array($binaries) ? $binaries : array($binaries);
 
@@ -70,11 +109,11 @@ class Command implements CommandInterface
                 $binary = $candidate;
                 break;
             }
-            if (null !== $binary = $finder->find($candidate)) {
+            if (null!==$binary = $finder->find($candidate)) {
                 break;
             }
         }
-        if (null === $binary) {
+        if (null===$binary) {
             throw new ExecutableNotFoundException(sprintf(
                 'Executable not found, proposed : %s', implode(', ', $binaries)
             ));
@@ -82,7 +121,7 @@ class Command implements CommandInterface
 
         $this->binary = $binary;
 
-        if (null === $logger) {
+        if (null===$logger) {
             $logger = new Logger(__NAMESPACE__ . ' logger');
             $logger->pushHandler(new NullHandler());
         }
@@ -90,6 +129,8 @@ class Command implements CommandInterface
     }
 
     /**
+     * 初始进程句柄
+     *
      * @param $command
      * @return Process
      */
@@ -99,12 +140,14 @@ class Command implements CommandInterface
             $processBuilder = ProcessBuilder::create($command)
                 ->setPrefix($this->binary)
                 ->setTimeout($this->config->get('timeout'));
-            $this->process = $processBuilder->getProcess();
+            $this->process  = $processBuilder->getProcess();
         }
         return $this->process;
     }
 
     /**
+     * 获取底层命令执行进程句柄
+     *
      * @return Process
      */
     public function getProcess()
@@ -113,6 +156,8 @@ class Command implements CommandInterface
     }
 
     /**
+     * 添加监听者
+     *
      * @param ListenerInterface $listener
      * @return $this
      */
@@ -123,6 +168,8 @@ class Command implements CommandInterface
     }
 
     /**
+     * 获取所有监听者
+     *
      * @return ListenerInterface[]
      */
     public function getListeners()
@@ -131,6 +178,8 @@ class Command implements CommandInterface
     }
 
     /**
+     * 执行命令
+     *
      * @param $command
      * @return string
      */
@@ -166,6 +215,8 @@ class Command implements CommandInterface
     }
 
     /**
+     * 返回监听回调函数体
+     *
      * @param $listeners
      * @return \Closure
      */
@@ -178,6 +229,11 @@ class Command implements CommandInterface
         };
     }
 
+    /**
+     * 获取执行结果代码
+     *
+     * @return int|null
+     */
     public function getExitCode()
     {
         if ($this->process) {
@@ -186,6 +242,11 @@ class Command implements CommandInterface
         return null;
     }
 
+    /**
+     * 获取执行命令具体文本信息
+     *
+     * @return null|string
+     */
     public function getCommandLine()
     {
         if ($this->process) {
@@ -194,6 +255,11 @@ class Command implements CommandInterface
         return null;
     }
 
+    /**
+     * 获取执行结果代码文本信息
+     *
+     * @return null|string
+     */
     public function getExitCodeText()
     {
         if ($this->process) {
@@ -202,6 +268,11 @@ class Command implements CommandInterface
         return null;
     }
 
+    /**
+     * 获取错误输出内容
+     *
+     * @return null|string
+     */
     public function getErrorOutput()
     {
         if ($this->process) {
@@ -210,6 +281,11 @@ class Command implements CommandInterface
         return null;
     }
 
+    /**
+     * 获取输出内容
+     *
+     * @return null|string
+     */
     public function getOutput()
     {
         if ($this->process) {
@@ -218,6 +294,11 @@ class Command implements CommandInterface
         return null;
     }
 
+    /**
+     * 是否执行成功
+     *
+     * @return bool|null
+     */
     public function isSuccessful()
     {
         if ($this->process) {

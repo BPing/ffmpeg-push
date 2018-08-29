@@ -3,6 +3,12 @@ namespace FFMpegPush\FFProbe;
 
 use FFMpegPush\Configuration;
 
+/**
+ *
+ * 流结构信息
+ *
+ * @package FFMpegPush\FFProbe
+ */
 class Stream extends Configuration
 {
     /**

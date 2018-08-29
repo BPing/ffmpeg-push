@@ -1,10 +1,16 @@
 <?php
+
 namespace FFMpegPush\Command;
 
 use FFMpegPush\Configuration;
 use FFMpegPush\ConfigurationInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ *  ffmpeg 可执行命令
+ *
+ * @package FFMpegPush\Command
+ */
 class FFMpegCommand extends Command
 {
     /**
