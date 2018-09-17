@@ -3,92 +3,91 @@
  * Created by PhpStorm.
  * User: cbping-user
  * Date: 2017/5/4
- * Time: 18:32
+ * Time: 18:32.
  */
 
 namespace FFMpegPush;
 
-
 use Symfony\Component\Process\Process;
-
 
 /**
  * 推流信息。
- *
- * @package FFMpegPush
  */
 class PushInfo
 {
     /**
-     * 底层执行
+     * 底层执行.
      *
-     * @var  $process Process
+     * @var Process
      */
     private $process;
 
     /**
-     * 文件（视频）
+     * 文件（视频）.
      *
      * @var string
      */
     private $pathfile;
 
     /**
-     * 视频时长（s）
+     * 视频时长（s）.
      *
-     * @var double
+     * @var float
      */
     private $duration;
 
     /**
-     * 视频文件大小（Kb）
+     * 视频文件大小（Kb）.
      *
-     * @var double
+     * @var float
      * */
     private $totalSize;
 
-    /** @var integer */
+    /** @var int */
     private $currentSize;
 
-    /** @var integer */
+    /** @var int */
     private $currentTime;
 
     /**
-     *  推流速率（Kb/s）
+     *  推流速率（Kb/s）.
      *
-     * @var integer
+     * @var int
      */
     private $rate;
 
     /**
-     * 推流进度百分比
+     * 推流进度百分比.
      *
-     * @var integer
+     * @var int
      */
     private $percent = 0;
 
     /**
-     * 按照当前速率，预计还需要多少秒
+     * 按照当前速率，预计还需要多少秒.
      *
-     * @var integer
+     * @var int
      */
     private $remaining = null;
 
     /**
      * @param mixed $process
+     *
      * @return PushInfo
      */
     public function setProcess($process)
     {
         $this->process = $process;
+
         return $this;
     }
 
     public function isSuccessful()
     {
         if (!$this->process) {
-            return null;
+            return;
         }
+
         return $this->process->isSuccessful();
     }
 
@@ -98,8 +97,9 @@ class PushInfo
     public function getOutput()
     {
         if (!$this->process) {
-            return null;
+            return;
         }
+
         return $this->process->getOutput();
     }
 
@@ -109,11 +109,11 @@ class PushInfo
     public function getErrOutput()
     {
         if (!$this->process) {
-            return null;
+            return;
         }
+
         return $this->process->getErrorOutput();
     }
-
 
     /**
      * @return mixed
@@ -121,19 +121,20 @@ class PushInfo
     public function getExitCode()
     {
         if (!$this->process) {
-            return null;
+            return;
         }
+
         return $this->process->getExitCode();
     }
 
     public function getCommandLine()
     {
         if (!$this->process) {
-            return null;
+            return;
         }
+
         return $this->process->getCommandLine();
     }
-
 
     /**
      * @return int
@@ -145,15 +146,15 @@ class PushInfo
 
     /**
      * @param int $totalSize
+     *
      * @return PushInfo
      */
     public function setTotalSize($totalSize)
     {
         $this->totalSize = $totalSize;
+
         return $this;
     }
-
-
 
     /**
      * @return int
@@ -166,11 +167,13 @@ class PushInfo
 
     /**
      * @param int $currentSize
+     *
      * @return $this
      */
     public function setCurrentSize($currentSize)
     {
         $this->currentSize = $currentSize;
+
         return $this;
     }
 
@@ -184,11 +187,13 @@ class PushInfo
 
     /**
      * @param int $currentTime
+     *
      * @return PushInfo
      */
     public function setCurrentTime($currentTime)
     {
         $this->currentTime = $currentTime;
+
         return $this;
     }
 
@@ -202,11 +207,13 @@ class PushInfo
 
     /**
      * @param string $pathfile
+     *
      * @return PushInfo
      */
     public function setPathfile($pathfile)
     {
         $this->pathfile = $pathfile;
+
         return $this;
     }
 
@@ -220,14 +227,15 @@ class PushInfo
 
     /**
      * @param int $duration
+     *
      * @return PushInfo
      */
     public function setDuration($duration)
     {
         $this->duration = $duration;
+
         return $this;
     }
-
 
     /**
      * @return int
@@ -239,11 +247,13 @@ class PushInfo
 
     /**
      * @param int $rate
+     *
      * @return PushInfo
      */
     public function setRate($rate)
     {
         $this->rate = $rate;
+
         return $this;
     }
 
@@ -258,11 +268,13 @@ class PushInfo
 
     /**
      * @param int $percent
+     *
      * @return PushInfo
      */
     public function setPercent($percent)
     {
         $this->percent = $percent;
+
         return $this;
     }
 
@@ -272,16 +284,17 @@ class PushInfo
     public function getRemaining()
     {
         return $this->remaining;
-
     }
 
     /**
      * @param int $remaining
+     *
      * @return PushInfo
      */
     public function setRemaining($remaining)
     {
         $this->remaining = $remaining;
+
         return $this;
     }
 

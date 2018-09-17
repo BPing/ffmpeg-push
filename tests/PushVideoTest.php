@@ -1,4 +1,5 @@
 <?php
+
 namespace Test\FFMpegPush;
 
 use FFMpegPush\Command\FFProbeCommand;
@@ -10,7 +11,6 @@ use FFMpegPush\PushVideo;
 
 class PushVideoTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testPush()
     {
         $pushUrl = 'rtmp://';
@@ -20,10 +20,9 @@ class PushVideoTest extends \PHPUnit_Framework_TestCase
         $pushCmd->addListener($debugListener);
         $lastStr = LastMsg::create();
         $debugListener->on('debug', function ($line) use ($lastStr) {
-            if (is_string($line) && '' !== $line && "" !== $line) {
+            if (is_string($line) && '' !== $line && '' !== $line) {
                 $lastStr->strMsg = $line;
             }
-            return;
         });
 
         $pushCmd->onProgress(function ($percent, $remaining, $rate) {
@@ -79,7 +78,7 @@ class PushVideoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * ffprobe
+     * ffprobe.
      */
     public function testFFprobe()
     {
@@ -101,7 +100,6 @@ class PushVideoTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($format->get('filename') == 'res/test.mp4', 'filename:res/test.mp4');
     }
 }
-
 
 class LastMsg
 {

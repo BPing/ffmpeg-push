@@ -2,60 +2,60 @@
 
 namespace FFMpegPush\Command;
 
+use FFMpegPush\Configuration;
+use FFMpegPush\ConfigurationInterface;
 use FFMpegPush\Exception\FileException;
 use FFMpegPush\Exception\RuntimeException;
 use FFMpegPush\FFProbe\DataHandler;
 use FFMpegPush\FFProbe\Format;
 use FFMpegPush\FFProbe\StreamCollection;
-use FFMpegPush\VideoInfo;
-use FFMpegPush\Configuration;
-use FFMpegPush\ConfigurationInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * FFProbe 可执行命令
- *
- * @package FFMpegPush\Command
+ * FFProbe 可执行命令.
  */
 class FFProbeCommand extends Command
 {
     const TYPE_STREAMS = 'streams';
-    const TYPE_FORMAT  = 'format';
-    /** @var   DataHandler $dataHandler */
+    const TYPE_FORMAT = 'format';
+    /** @var DataHandler $dataHandler */
     private $dataHandler;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * FFProbeCommand constructor.
-     * @param array $configuration
+     *
+     * @param array                $configuration
      * @param LoggerInterface|null $logger
      */
-    public function __construct($configuration = array(), LoggerInterface $logger = null)
+    public function __construct($configuration = [], LoggerInterface $logger = null)
     {
         $this->name = 'FFProbe';
         if (!$configuration instanceof ConfigurationInterface) {
             $configuration = new Configuration($configuration);
         }
-        $configuration->set('binaries', $configuration->get('ffprobe.binaries', array('ffprobe')));
+        $configuration->set('binaries', $configuration->get('ffprobe.binaries', ['ffprobe']));
         parent::__construct($configuration, $logger);
         $this->dataHandler = new DataHandler();
     }
 
     /**
-     * @param array $configuration
+     * @param array                $configuration
      * @param LoggerInterface|null $logger
+     *
      * @return static
      */
-    public static function create($configuration = array(), LoggerInterface $logger = null)
+    public static function create($configuration = [], LoggerInterface $logger = null)
     {
         return new static ($configuration, $logger);
     }
 
     /**
-     * 获取多媒体的封装格式
+     * 获取多媒体的封装格式.
      *
      * @param $pathfile
+     *
      * @return Format|StreamCollection
      */
     public function format($pathfile)
@@ -64,7 +64,7 @@ class FFProbeCommand extends Command
     }
 
     /**
-     * 查看多媒体文件中的流信息
+     * 查看多媒体文件中的流信息.
      *
      * 如图所示，可以看到流的信息：
      *
@@ -295,6 +295,7 @@ class FFProbeCommand extends Command
      * </table>
      *
      * @param $pathfile
+     *
      * @return Format|StreamCollection
      */
     public function streams($pathfile)
@@ -306,34 +307,39 @@ class FFProbeCommand extends Command
      * @param $pathfile
      * @param $command
      * @param $type
-     * @return Format|StreamCollection
+     *
      * @throws FileException
+     *
+     * @return Format|StreamCollection
      */
     private function probe($pathfile, $command, $type)
     {
         if (!is_file($pathfile)) {
-            throw new FileException('File 【' . $pathfile . "】 not found.");
+            throw new FileException('File 【'.$pathfile.'】 not found.');
         }
 
-        $commands = array($pathfile, $command);
+        $commands = [$pathfile, $command];
         // allowed in latest PHP-FFmpeg version
         $commands[] = '-print_format';
         $commands[] = 'json';
+
         try {
             $this->command($commands);
             $output = $this->getOutput();
         } catch (\Exception $e) {
             throw new RuntimeException(sprintf('Unable to probe %s', $pathfile), $e->getCode(), $e);
         }
+
         return $this->dataHandler->map($type, $this->parseJson($output));
     }
 
     private function parseJson($data)
     {
         $ret = @json_decode($data, true);
-        if (JSON_ERROR_NONE!==json_last_error()) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new RuntimeException(sprintf('Unable to parse json %s src %s', $ret, $data));
         }
+
         return $ret;
     }
 }

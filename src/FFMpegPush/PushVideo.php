@@ -1,4 +1,5 @@
 <?php
+
 namespace FFMpegPush;
 
 use FFMpegPush\Command\FFMpegCommand;
@@ -7,54 +8,58 @@ use FFMpegPush\Exception\ConfigException;
 use Psr\Log\LoggerInterface;
 
 /**
- * 推流命令
+ * 推流命令.
  *
  * Class PushVideo
- *
- * @package FFMpegPush
  */
 class PushVideo extends FFMpegCommand
 {
     /**
-     * 构造输入部分命令
+     * 构造输入部分命令.
      *
-     * @var $input PushInput
+     * @var PushInput
      */
     protected $input;
-    /** @var  PushFormat */
+    /** @var PushFormat */
     protected $format;
-    /** @var  PushOutput */
+    /** @var PushOutput */
     protected $output;
-    /** @var  PushProgressListener */
+    /** @var PushProgressListener */
     protected $progressListener;
 
     /**
      * @param PushInput $input
+     *
      * @return $this
      */
     public function setInput(PushInput $input)
     {
         $this->input = $input;
+
         return $this;
     }
 
     /**
      * @param mixed $format
+     *
      * @return $this
      */
     public function setFormat(PushFormat $format)
     {
         $this->format = $format;
+
         return $this;
     }
 
     /**
      * @param mixed $output
+     *
      * @return $this
      */
     public function setOutput(PushOutput $output)
     {
         $this->output = $output;
+
         return $this;
     }
 
@@ -64,7 +69,7 @@ class PushVideo extends FFMpegCommand
      * @param array                $configuration
      * @param LoggerInterface|null $logger
      */
-    public function __construct($configuration = array(), LoggerInterface $logger = null)
+    public function __construct($configuration = [], LoggerInterface $logger = null)
     {
         parent::__construct($configuration, $logger);
         $this->progressListener = PushProgressListener::create(FFProbeCommand::create($configuration, $logger));
@@ -75,8 +80,10 @@ class PushVideo extends FFMpegCommand
      * 推流
      *
      * @notice 阻塞
-     * @return PushInfo
+     *
      * @throws \Exception
+     *
+     * @return PushInfo
      */
     public function push()
     {
@@ -89,16 +96,17 @@ class PushVideo extends FFMpegCommand
             $this->format->getFormats(),
             $this->output->getOutPuts()
         ));
+
         return $this->getPushInfo();
     }
 
-    public static function create($configuration = array(), LoggerInterface $logger = null)
+    public static function create($configuration = [], LoggerInterface $logger = null)
     {
         return new static($configuration, $logger);
     }
 
     /**
-     * 监听推流进度
+     * 监听推流进度.
      *
      * @param callable $listener
      */
@@ -119,7 +127,7 @@ class PushVideo extends FFMpegCommand
     }
 
     /**
-     * 获取推流命令最终形式
+     * 获取推流命令最终形式.
      *
      * @return string
      */
@@ -127,11 +135,11 @@ class PushVideo extends FFMpegCommand
     {
         $commandLine = parent::getCommandLine();
         if (is_null($commandLine)) {
-            $commandLine = implode(" ",
+            $commandLine = implode(' ',
                 array_map(
-                    array('Symfony\\Component\\Process\\ProcessUtils', 'escapeArgument'),
+                    ['Symfony\\Component\\Process\\ProcessUtils', 'escapeArgument'],
                     array_merge(
-                        array($this->binary),
+                        [$this->binary],
                         $this->input->getInputs(),
                         $this->format->getFormats(),
                         $this->output->getOutPuts()
@@ -139,6 +147,7 @@ class PushVideo extends FFMpegCommand
                 )
             );
         }
+
         return $commandLine;
     }
 }
