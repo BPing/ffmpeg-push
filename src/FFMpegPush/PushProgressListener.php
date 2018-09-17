@@ -1,6 +1,6 @@
 <?php
-namespace FFMpegPush;
 
+namespace FFMpegPush;
 
 use Evenement\EventEmitter;
 use FFMpegPush\Command\FFProbeCommand;
@@ -9,27 +9,25 @@ use FFMpegPush\Listeners\ListenerInterface;
 
 /**
  * 推流监听。
- *      计算推流进度等度量信息
+ *      计算推流进度等度量信息.
  *
  * Class PushProgressListener
- *
- * @package FFMpegPush
  */
 class PushProgressListener extends EventEmitter implements ListenerInterface
 {
-    /** @var integer */
+    /** @var int */
     private $duration;
 
-    /** @var integer */
+    /** @var int */
     private $totalSize;
 
-    /** @var integer */
+    /** @var int */
     private $currentSize;
 
-    /** @var integer */
+    /** @var int */
     private $currentTime;
 
-    /** @var double */
+    /** @var float */
     private $lastOutput = null;
 
     /** @var FFProbeCommand */
@@ -38,28 +36,27 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     /** @var string */
     private $pathfile;
 
-
-    /** @var Boolean */
+    /** @var bool */
     private $initialized = false;
 
     /**
-     *  rate in kb/s
+     *  rate in kb/s.
      *
-     * @var integer
+     * @var int
      */
     private $rate;
 
     /**
-     * Percentage of transcoding progress (0 - 100)
+     * Percentage of transcoding progress (0 - 100).
      *
-     * @var integer
+     * @var int
      */
     private $percent = 0;
 
     /**
-     * Time remaining (seconds)
+     * Time remaining (seconds).
      *
-     * @var integer
+     * @var int
      */
     private $remaining = null;
 
@@ -69,9 +66,9 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     public function setPathfile($pathfile)
     {
         $this->pathfile = $pathfile;
+
         return $this;
     }
-
 
     public function __construct(FFProbeCommand $ffprobe, $pathfile)
     {
@@ -123,6 +120,7 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
 
     /**
      * @param $progress
+     *
      * @return array|null|void
      */
     private function parseProgress($progress)
@@ -135,10 +133,10 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
             return;
         }
 
-        $matches = array();
+        $matches = [];
 
         if (preg_match($this->getPattern(), $progress, $matches) !== 1) {
-            return null;
+            return;
         }
 
         $currentDuration = $this->convertDuration($matches[2]);
@@ -151,7 +149,7 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
 
             // Check the type of the currentSize variable and convert it to an integer if needed.
             if (!is_numeric($currentSize)) {
-                $currentSize = (int)$currentSize;
+                $currentSize = (int) $currentSize;
             }
 
             $deltaSize = $currentSize - $this->currentSize;
@@ -168,20 +166,20 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
 
         $this->percent = floor($percent * 100);
         $this->lastOutput = $currentTime;
-        $this->currentSize = (int)$currentSize;
+        $this->currentSize = (int) $currentSize;
         $this->currentTime = $currentDuration;
 
         return $this->getProgressInfo();
     }
 
     /**
+     * @param string $rawDuration in the format 00:00:00.00
      *
-     * @param  string $rawDuration in the format 00:00:00.00
      * @return number
      */
     private function convertDuration($rawDuration)
     {
-        $ar = array_reverse(explode(":", $rawDuration));
+        $ar = array_reverse(explode(':', $rawDuration));
         $duration = floatval($ar[0]);
         if (!empty($ar[1])) {
             $duration += intval($ar[1]) * 60;
@@ -199,16 +197,16 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     private function getProgressInfo()
     {
         if ($this->remaining === null) {
-            return null;
+            return;
         }
-        return array(
+
+        return [
             'percent'   => $this->percent,
             'remaining' => $this->remaining,
             'rate'      => $this->rate,
-            'pushInfo'  => $this->getPushInfo()
-        );
+            'pushInfo'  => $this->getPushInfo(),
+        ];
     }
-
 
     private function initialize()
     {
@@ -247,9 +245,10 @@ class PushProgressListener extends EventEmitter implements ListenerInterface
     /**
      * @param FFProbeCommand $ffprobe
      * @param string         $pathfile
+     *
      * @return static
      */
-    public static function create(FFProbeCommand $ffprobe, $pathfile = "")
+    public static function create(FFProbeCommand $ffprobe, $pathfile = '')
     {
         return new static($ffprobe, $pathfile);
     }
