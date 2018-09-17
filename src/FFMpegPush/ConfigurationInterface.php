@@ -1,10 +1,11 @@
 <?php
+
 namespace FFMpegPush;
 
 interface ConfigurationInterface extends \ArrayAccess, \IteratorAggregate
 {
     /**
-     * Returns the value given a key from configuration
+     * Returns the value given a key from configuration.
      *
      * @param string $key
      * @param mixed  $default The default value in case the key does not exist
@@ -14,7 +15,7 @@ interface ConfigurationInterface extends \ArrayAccess, \IteratorAggregate
     public function get($key, $default = null);
 
     /**
-     * Set a value to configuration
+     * Set a value to configuration.
      *
      * @param string $key   The key
      * @param mixed  $value The value corresponding to the key
@@ -22,16 +23,16 @@ interface ConfigurationInterface extends \ArrayAccess, \IteratorAggregate
     public function set($key, $value);
 
     /**
-     * Tells if Configuration contains `$key`
+     * Tells if Configuration contains `$key`.
      *
      * @param string $key
      *
-     * @return Boolean
+     * @return bool
      */
     public function has($key);
 
     /**
-     * Removes a value given a key
+     * Removes a value given a key.
      *
      * @param string $key
      *
@@ -40,7 +41,7 @@ interface ConfigurationInterface extends \ArrayAccess, \IteratorAggregate
     public function remove($key);
 
     /**
-     * Returns all values set in the configuration
+     * Returns all values set in the configuration.
      *
      * @return array
      */

@@ -16,14 +16,12 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Class Command 命令基本类
- *
- * @package FFMpegPush\Command
+ * Class Command 命令基本类.
  */
 class Command implements CommandInterface
 {
     /**
-     * 名字
+     * 名字.
      *
      * @var string
      */
@@ -32,39 +30,39 @@ class Command implements CommandInterface
     /**
      * 底层命令进程句柄。
      *
-     * @var  $process Process
+     * @var Process
      */
     protected $process;
 
     /**
-     * 命令配置信息
+     * 命令配置信息.
      *
-     * @var $config Configuration
+     * @var Configuration
      */
     protected $config;
 
-    /** @var $logger  LoggerInterface */
+    /** @var $logger LoggerInterface */
     protected $logger;
 
     /**
-     * 命令可执行文件目录
+     * 命令可执行文件目录.
      *
      * @var string
      */
     protected $binary;
 
     /**
-     * 命令执行超时时间. 默认一天
+     * 命令执行超时时间. 默认一天.
      */
     const TimeOut = 86400;
 
     /**
      * 监听者集合。
-     *   监听命令执行进度
+     *   监听命令执行进度.
      *
-     * @var $listeners ListenerInterface[]
+     * @var ListenerInterface[]
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Command constructor.
@@ -78,18 +76,19 @@ class Command implements CommandInterface
      *            )
      *
      * </code>
-     * @param       $logger
+     * @param   $logger
+     *
      * @throws ConfigException
      * @throws ExecutableNotFoundException
      */
-    public function __construct($config = array(), LoggerInterface $logger = null)
+    public function __construct($config = [], LoggerInterface $logger = null)
     {
         if (is_array($config)) {
             $this->config = new Configuration($config);
         } elseif ($config instanceof ConfigurationInterface) {
             $this->config = $config;
         } else {
-            throw new ConfigException("config should not be null");
+            throw new ConfigException('config should not be null');
         }
 
         if (!$this->config->has('binaries')) {
@@ -99,21 +98,21 @@ class Command implements CommandInterface
             $this->config->set('timeout', self::TimeOut);
         }
 
-        $finder   = new ExecutableFinder();
-        $binary   = null;
+        $finder = new ExecutableFinder();
+        $binary = null;
         $binaries = $this->config->get('binaries');
-        $binaries = is_array($binaries) ? $binaries : array($binaries);
+        $binaries = is_array($binaries) ? $binaries : [$binaries];
 
         foreach ($binaries as $candidate) {
             if (file_exists($candidate) && is_executable($candidate)) {
                 $binary = $candidate;
                 break;
             }
-            if (null!==$binary = $finder->find($candidate)) {
+            if (null !== $binary = $finder->find($candidate)) {
                 break;
             }
         }
-        if (null===$binary) {
+        if (null === $binary) {
             throw new ExecutableNotFoundException(sprintf(
                 'Executable not found, proposed : %s', implode(', ', $binaries)
             ));
@@ -121,17 +120,18 @@ class Command implements CommandInterface
 
         $this->binary = $binary;
 
-        if (null===$logger) {
-            $logger = new Logger(__NAMESPACE__ . ' logger');
+        if (null === $logger) {
+            $logger = new Logger(__NAMESPACE__.' logger');
             $logger->pushHandler(new NullHandler());
         }
         $this->logger = $logger;
     }
 
     /**
-     * 初始进程句柄
+     * 初始进程句柄.
      *
      * @param $command
+     *
      * @return Process
      */
     protected function initProcess($command)
@@ -140,13 +140,14 @@ class Command implements CommandInterface
             $processBuilder = ProcessBuilder::create($command)
                 ->setPrefix($this->binary)
                 ->setTimeout($this->config->get('timeout'));
-            $this->process  = $processBuilder->getProcess();
+            $this->process = $processBuilder->getProcess();
         }
+
         return $this->process;
     }
 
     /**
-     * 获取底层命令执行进程句柄
+     * 获取底层命令执行进程句柄.
      *
      * @return Process
      */
@@ -156,19 +157,21 @@ class Command implements CommandInterface
     }
 
     /**
-     * 添加监听者
+     * 添加监听者.
      *
      * @param ListenerInterface $listener
+     *
      * @return $this
      */
     public function addListener(ListenerInterface $listener)
     {
         $this->listeners[] = $listener;
+
         return $this;
     }
 
     /**
-     * 获取所有监听者
+     * 获取所有监听者.
      *
      * @return ListenerInterface[]
      */
@@ -178,9 +181,10 @@ class Command implements CommandInterface
     }
 
     /**
-     * 执行命令
+     * 执行命令.
      *
      * @param $command
+     *
      * @return string
      */
     public function command($command)
@@ -203,21 +207,24 @@ class Command implements CommandInterface
     }
 
     /**
-     * 停止执行
+     * 停止执行.
      */
     public function stop()
     {
         if ($this->process) {
             $this->logger->info(sprintf('%s stopping.pid【%s】', $this->name, $this->process->getPid()));
+
             return $this->process->stop();
         }
+
         return 0;
     }
 
     /**
-     * 返回监听回调函数体
+     * 返回监听回调函数体.
      *
      * @param $listeners
+     *
      * @return \Closure
      */
     private function buildCallback($listeners)
@@ -239,11 +246,10 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getExitCode();
         }
-        return null;
     }
 
     /**
-     * 获取执行命令具体文本信息
+     * 获取执行命令具体文本信息.
      *
      * @return null|string
      */
@@ -252,11 +258,10 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getCommandLine();
         }
-        return null;
     }
 
     /**
-     * 获取执行结果代码文本信息
+     * 获取执行结果代码文本信息.
      *
      * @return null|string
      */
@@ -265,11 +270,10 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getExitCodeText();
         }
-        return null;
     }
 
     /**
-     * 获取错误输出内容
+     * 获取错误输出内容.
      *
      * @return null|string
      */
@@ -278,11 +282,10 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getErrorOutput();
         }
-        return null;
     }
 
     /**
-     * 获取输出内容
+     * 获取输出内容.
      *
      * @return null|string
      */
@@ -291,7 +294,6 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->getOutput();
         }
-        return null;
     }
 
     /**
@@ -304,11 +306,9 @@ class Command implements CommandInterface
         if ($this->process) {
             return $this->process->isSuccessful();
         }
-        return null;
     }
 
     public function clear()
     {
-
     }
 }

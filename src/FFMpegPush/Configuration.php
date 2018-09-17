@@ -1,11 +1,12 @@
 <?php
+
 namespace FFMpegPush;
 
 class Configuration implements ConfigurationInterface
 {
     private $data;
 
-    public function __construct(array $data = array())
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }
@@ -95,7 +96,7 @@ class Configuration implements ConfigurationInterface
         $this->remove($offset);
     }
 
-    public static function create(array $data = array())
+    public static function create(array $data = [])
     {
         return new static($data);
     }

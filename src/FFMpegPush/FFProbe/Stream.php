@@ -1,20 +1,18 @@
 <?php
+
 namespace FFMpegPush\FFProbe;
 
 use FFMpegPush\Configuration;
 
 /**
- *
- * 流结构信息
- *
- * @package FFMpegPush\FFProbe
+ * 流结构信息.
  */
 class Stream extends Configuration
 {
     /**
      * Returns true if the stream is an audio stream.
      *
-     * @return Boolean
+     * @return bool
      */
     public function isAudio()
     {
@@ -24,7 +22,7 @@ class Stream extends Configuration
     /**
      * Returns true if the stream is a video stream.
      *
-     * @return Boolean
+     * @return bool
      */
     public function isVideo()
     {
