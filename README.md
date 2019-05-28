@@ -2,7 +2,7 @@
 
     Push video stream to live server with ffmpeg  binary
   
-# 安装
+# Installation 安装
 
 ```cmd
 composer require bping/ffmpeg-push dev-master
@@ -15,10 +15,12 @@ composer require bping/ffmpeg-push dev-master
   * Install [ffmpeg](http://ffmpeg.org/download.html)，and must include the `ffprobe`command at the same time
   * Configure the executable directory to the environment variable PATH
  
-  * 安装[ffmpeg](http://ffmpeg.org/download.html)，必须同时包含`ffprobe`命令
-  * 配置可执行文件目录到环境变量PATH中
+ 
+ 
+>>  * 安装[ffmpeg](http://ffmpeg.org/download.html)，必须同时包含`ffprobe`命令
+>>  * 配置可执行文件目录到环境变量PATH中
     
-### push
+### push 推流
 
 ```php
 require __DIR__ . '/trunk/vendor/autoload.php';
@@ -71,17 +73,17 @@ use FFMpegPush\PushVideo;
 ### result `PushInfo`
 
 ```php
-//是否成功
+// Is Successful 是否成功
   $pushinfo->isSuccessful()    
 //输出
   $pushinfo->getOutput()    
-//错误输出
+// Error output 错误输出
   $pushinfo->getErrOutput()    
-//执行返回码
+// 执行返回码
   $pushinfo->getExitCode()
-//目前推流时间，可以用中途断流重推起点时间
+// 目前推流时间，可以用中途断流重推起点时间
   $pushinfo->getCurrentTime()
-//更多请看 PushInfo类  
+// More infomation: PushInfo类  
 ```
 
 ### Input 输入 `PushInput`
@@ -129,15 +131,21 @@ var_dump($ffprobe->stream('test/test.mp4'));
 
 ### `ffmpeg.binaries`:
 
-> ffmpeg命令名称或者路径。如果想使用简单名称，记得把ffmpeg加入环境变量`PATH` 中。 默认值：ffmpeg
+> The name or path  of `ffmpeg` command . If you want to use a simple name, remember to add `ffmpeg` to the environment variable `PATH`. Default value: `ffmpeg`
+
+>> ffmpeg命令名称或者路径。如果想使用简单名称，记得把ffmpeg加入环境变量`PATH` 中。 默认值：ffmpeg
 
 ### `ffprobe.binaries`:
 
-> ffprobe命令名称或者路径。如果想使用简单名称，记得把ffprobe加入环境变量`PATH` 中。 默认值：ffprobe
+> The name or path  of `ffprobe` command . If you want to use a simple name, remember to add `ffprobe` to the environment variable `PATH`. Default value: `ffprobe`
+
+>> ffprobe命令名称或者路径。如果想使用简单名称，记得把ffprobe加入环境变量`PATH` 中。 默认值：ffprobe
 
 ### `timeout`:
 
-> 命令执行的超时时长，单位（s）.考虑到推流时长一般较长，所以默认值为一天
+> Overtime of command execution, unit (s). Considering that time of  push stream  is usually longer,the default value is one day .
+
+>> 命令执行的超时时长，单位（s）.考虑到推流时长一般较长，所以默认值为一天
 
 
 ```php
