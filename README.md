@@ -1,6 +1,6 @@
 # ffmpeg-push
 
-    用ffmpeg命令推流库
+    Push video stream to live server with ffmpeg  binary
   
 # 安装
 
@@ -8,14 +8,17 @@
 composer require bping/ffmpeg-push dev-master
 ```
 
-# 使用
+# usage
 
-### 首先
+### first
 
+  * Install [ffmpeg](http://ffmpeg.org/download.html)，and must include the `ffprobe`command at the same time
+  * Configure the executable directory to the environment variable PATH
+ 
   * 安装[ffmpeg](http://ffmpeg.org/download.html)，必须同时包含`ffprobe`命令
   * 配置可执行文件目录到环境变量PATH中
     
-### 推流
+### push
 
 ```php
 require __DIR__ . '/trunk/vendor/autoload.php';
@@ -29,11 +32,11 @@ use FFMpegPush\PushVideo;
  //$ffprobe = FFProbeCommand::create();
  //var_dump($ffprobe->format('test.mp4'));
 
-// 推流
+// Push Command 推流命令
 // ffmpeg -re  -i  \"test/test.mp4\" -c:v copy -c:a copy -f flv rtmp://pili-publish.heliwebs.com
  $pushUrl = 'rtmp://pili-publish.heliwebs.com';
  $pushCmd = PushVideo::create();
- // 监听推流进度
+ // listening  the progress of push flow  监听推流进度
  $pushCmd->onProgress(function ($percent, $remaining, $rate) {
  //    var_dump(func_get_args());
      echo "progress:$percent% remaining:$remaining(s) rate:$rate(kb/s)\n";
@@ -55,17 +58,17 @@ use FFMpegPush\PushVideo;
  
  echo $pushCmd->getCommandLine();
  
- // 开始推流
+ // start to push
  $pushCmd->push();
  
  echo $pushCmd->getErrorOutput();
  echo "\n";
  echo "Exit Code: " . $pushCmd->getExitCode();   
         
-// 停止推流，需要异步调用 
+// Stop pushing, asynchronous calls are required 停止推流，需要异步调用 
 // $pushCmd->stop();           
 ```
-### 结果 `PushInfo`
+### result `PushInfo`
 
 ```php
 //是否成功
@@ -81,7 +84,7 @@ use FFMpegPush\PushVideo;
 //更多请看 PushInfo类  
 ```
 
-### 输入 `PushInput`
+### Input 输入 `PushInput`
 
 ```php
   PushInput::create()
@@ -89,7 +92,7 @@ use FFMpegPush\PushVideo;
   ->setInputVideo('test/test.mp4')
 ```
 
-### 转码 `PushFormat`
+### Transcoding 转码 `PushFormat`
 
 ```php
         PushFormat::create()
@@ -107,13 +110,13 @@ use FFMpegPush\PushVideo;
             );
 ```
 
-### 输出 `PushOutput`
+### Output 输出 `PushOutput`
 
 ```php
  PushOutput::create()->setPushUrl($pushUrl)
 ```
 
-### 获取视频文件信息
+### Getting Video File Information 获取视频文件信息
 
 ```php
 ///** @var  $ffprobe FFProbeCommand */
@@ -122,7 +125,7 @@ var_dump($ffprobe->format('test/test.mp4'));
 var_dump($ffprobe->stream('test/test.mp4'));
 ```
 
-# 配置
+# config 配置
 
 ### `ffmpeg.binaries`:
 
