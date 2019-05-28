@@ -10,7 +10,7 @@ composer require bping/ffmpeg-push dev-master
 
 # usage
 
-### first
+### First
 
   * Install [ffmpeg](http://ffmpeg.org/download.html)，and must include the `ffprobe`command at the same time
   * Configure the executable directory to the environment variable PATH
@@ -20,7 +20,7 @@ composer require bping/ffmpeg-push dev-master
 >>  * 安装[ffmpeg](http://ffmpeg.org/download.html)，必须同时包含`ffprobe`命令
 >>  * 配置可执行文件目录到环境变量PATH中
     
-### push 推流
+### Push 推流
 
 ```php
 require __DIR__ . '/trunk/vendor/autoload.php';
@@ -70,7 +70,7 @@ use FFMpegPush\PushVideo;
 // Stop pushing, asynchronous calls are required 停止推流，需要异步调用 
 // $pushCmd->stop();           
 ```
-### result `PushInfo`
+### Result `PushInfo`
 
 ```php
 // Is Successful 是否成功
