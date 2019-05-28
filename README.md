@@ -5,7 +5,7 @@
 # 安装
 
 ```cmd
-composer require bping/ffmpeg-push
+composer require bping/ffmpeg-push dev-master
 ```
 
 # 使用
